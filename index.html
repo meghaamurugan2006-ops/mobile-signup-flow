@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mobile Signup Flow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4e73df, #1cc88a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      width: 320px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4e73df;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #2e59d9;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .circle {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #ccc;
+      color: white;
+      text-align: center;
+      line-height: 25px;
+      font-size: 14px;
+    }
+
+    .circle.active {
+      background: #1cc88a;
+    }
+
+    .strength {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .success {
+      text-align: center;
+      color: #1cc88a;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="progress">
+    <div class="circle active">1</div>
+    <div class="circle">2</div>
+    <div class="circle">3</div>
+  </div>
+
+  <h2>Sign Up</h2>
+
+  <!-- Step 1 -->
+  <div class="step active">
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email Address">
+    <button onclick="nextStep()">Next</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <input type="password" id="password" placeholder="Create Password" onkeyup="checkStrength()">
+    <div class="strength" id="strengthText"></div>
+    <button onclick="nextStep()">Next</button>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <input type="number" id="otp" placeholder="Enter OTP (1234)">
+    <button onclick="submitForm()">Create Account</button>
+  </div>
+
+  <div class="success" id="successMsg"></div>
+
+</div>
+
+<script>
+  let currentStep = 0;
+  const steps = document.querySelectorAll('.step');
+  const circles = document.querySelectorAll('.circle');
+
+  function nextStep() {
+    if (currentStep < steps.length - 1) {
+      steps[currentStep].classList.remove('active');
+      circles[currentStep].classList.remove('active');
+      currentStep++;
+      steps[currentStep].classList.add('active');
+      circles[currentStep].classList.add('active');
+    }
+  }
+
+  function checkStrength() {
+    const pwd = document.getElementById("password").value;
+    const text = document.getElementById("strengthText");
+
+    if (pwd.length < 6) {
+      text.textContent = "Weak Password";
+      text.style.color = "red";
+    } else if (pwd.match(/[A-Z]/) && pwd.match(/[0-9]/)) {
+      text.textContent = "Strong Password";
+      text.style.color = "green";
+    } else {
+      text.textContent = "Medium Password";
+      text.style.color = "orange";
+    }
+  }
+
+  function submitForm() {
+    const otp = document.getElementById("otp").value;
+    if (otp === "1234") {
+      document.querySelector('.container').innerHTML =
+        "<p class='success'>🎉 Account Created Successfully!</p>";
+    } else {
+      alert("Invalid OTP");
+    }
+  }
+</script>
+
+</body>
+</html>
